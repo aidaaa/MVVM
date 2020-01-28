@@ -24,6 +24,7 @@ public class UserViewModel extends BaseObservable
     Context context;
 
     ArrayList<UserViewModel> userViewModels=new ArrayList<>();
+    //private MutableLiveData<ArrayList<UserViewModel>> userMutableLiveData=new MutableLiveData<>();
     private MutableLiveData<ArrayList<UserViewModel>> userMutableLiveData=new MutableLiveData<>();
 
 
