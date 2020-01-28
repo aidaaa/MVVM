@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.android.databinding.library.baseAdapters.BR;
+import com.example.mvvm.LiveData;
 import com.example.mvvm.model.MoviesData;
 import com.example.mvvm.model.UserModel;
 import com.example.mvvm.net.RestApiImpl;
@@ -50,7 +51,7 @@ public class UserViewModel extends BaseObservable
         userMutableLiveData.setValue(userViewModels);*/
 
 
-        RestApiImpl restApi=new RestApiImpl();
+       /* RestApiImpl restApi=new RestApiImpl();
         restApi.getObservable().subscribe(new io.reactivex.Observer<MoviesData>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -78,7 +79,11 @@ public class UserViewModel extends BaseObservable
             public void onComplete() {
 
             }
-        });
+        });*/
+
+        LiveData liveData=new LiveData();
+        MutableLiveData<MoviesData> aa=liveData.getDataNet();
+
     }
 
     @Bindable

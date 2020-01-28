@@ -20,38 +20,33 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class LiveData {
-    public class RestApiImpl extends ViewModel{
+public class LiveData extends ViewModel{
 
-       private MutableLiveData<MoviesData> currentName;
-       Context context;
+       private MutableLiveData<MoviesData> currentName=new MutableLiveData<>();
 
-       public MutableLiveData<MoviesData> getMoviesDataMutableLiveData()
-       {
-           if (currentName == null) {
-               currentName.observe((LifecycleOwner) context, new Observer<MoviesData>() {
-                   @Override
-                   public void onChanged(@Nullable MoviesData moviesData) {
-                       moviesData=getDataNet();
-                   }
-               });
-           }
-           return currentName;
-       }
-
-        public MoviesData getDataNet()
+        public MutableLiveData<MoviesData> getDataNet()
         {
             Api api= ApiService.getRetrofit().create(Api.class);
-            try {
-                return api.getMovie(1).execute().body();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
+
+            Call<MoviesData> call=api.getMovie(1);
+            call.enqueue(new Callback<MoviesData>() {
+                @Override
+                public void onResponse(Call<MoviesData> call, Response<MoviesData> response) {
+                    currentName.setValue(response.body());
+                }
+
+                @Override
+                public void onFailure(Call<MoviesData> call, Throwable t) {
+
+                }
+            });
+            return currentName;
         }
 
 
     }
 
-}
