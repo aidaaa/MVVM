@@ -9,7 +9,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiService {
-    public String base_url="http://moviesapi.ir/api/v1/";
+    public static String base_url="http://moviesapi.ir/api/v1/";
 
     public static Retrofit getRetrofit(){
         OkHttpClient.Builder client=new OkHttpClient.Builder();

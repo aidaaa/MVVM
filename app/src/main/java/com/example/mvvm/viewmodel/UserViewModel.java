@@ -12,10 +12,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.android.databinding.library.baseAdapters.BR;
+import com.example.mvvm.model.MoviesData;
 import com.example.mvvm.model.UserModel;
+import com.example.mvvm.net.RestApiImpl;
 import com.example.mvvm.view.adapter.UserAdapter;
 
 import java.util.ArrayList;
+
+import io.reactivex.disposables.Disposable;
 
 public class UserViewModel extends BaseObservable
 {
@@ -36,14 +40,45 @@ public class UserViewModel extends BaseObservable
 
     public UserViewModel(Context context) {
         this.context = context;
-        for (int i = 0; i < 5; i++) {
+/*        for (int i = 0; i < 5; i++) {
             UserModel userModel=new UserModel();
             userModel.setName("Name: "+i);
             userModel.setPhone("Phone: "+i);
             UserViewModel userViewModel=new UserViewModel(userModel);
             userViewModels.add(userViewModel);
         }
-        userMutableLiveData.setValue(userViewModels);
+        userMutableLiveData.setValue(userViewModels);*/
+
+
+        RestApiImpl restApi=new RestApiImpl();
+        restApi.getObservable().subscribe(new io.reactivex.Observer<MoviesData>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(MoviesData moviesData) {
+                for (int i = 0; i < moviesData.data.size(); i++) {
+                    UserModel userModel=new UserModel();
+                    userModel.setName("Year: "+moviesData.data.get(i).getYear());
+                    userModel.setPhone("Title: "+moviesData.data.get(i).getTitle());
+                    UserViewModel userViewModel=new UserViewModel(userModel);
+                    userViewModels.add(userViewModel);
+                }
+                userMutableLiveData.setValue(userViewModels);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     @Bindable

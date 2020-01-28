@@ -1,6 +1,10 @@
 package com.example.mvvm.net;
 
+import android.util.Log;
+
 import com.example.mvvm.model.MoviesData;
+
+import java.io.IOException;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -10,6 +14,8 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.content.ContentValues.TAG;
 
 public class RestApiImpl implements RestApi {
     @Override
@@ -36,20 +42,12 @@ public class RestApiImpl implements RestApi {
 
     public MoviesData getDataNet()
     {
-        final MoviesData[] moviesData = {new MoviesData()};
         Api api=ApiService.getRetrofit().create(Api.class);
-        Call<MoviesData> call=api.getMovie(1);
-        call.enqueue(new Callback<MoviesData>() {
-            @Override
-            public void onResponse(Call<MoviesData> call, Response<MoviesData> response) {
-                moviesData[0] =response.body();
-            }
-
-            @Override
-            public void onFailure(Call<MoviesData> call, Throwable t) {
-
-            }
-        });
-        return moviesData[0];
+        try {
+            return api.getMovie(1).execute().body();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
