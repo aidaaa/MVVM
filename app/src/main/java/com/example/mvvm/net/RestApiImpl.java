@@ -1,5 +1,6 @@
 package com.example.mvvm.net;
 
+import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
 import com.example.mvvm.model.MoviesData;
@@ -17,7 +18,8 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
-public class RestApiImpl implements RestApi {
+public class RestApiImpl extends ViewModel implements RestApi {
+
     @Override
     public Observable<MoviesData> getObservable() {
         return Observable.create(new ObservableOnSubscribe<MoviesData>() {
@@ -50,4 +52,6 @@ public class RestApiImpl implements RestApi {
             return null;
         }
     }
+
+
 }
