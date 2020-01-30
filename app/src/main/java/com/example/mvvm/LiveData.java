@@ -46,7 +46,5 @@ public class LiveData extends ViewModel{
             });
             return currentName;
         }
-
-
-    }
+}
 

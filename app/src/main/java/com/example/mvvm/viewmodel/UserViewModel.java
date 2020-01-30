@@ -83,6 +83,18 @@ public class UserViewModel extends BaseObservable
 
         LiveData liveData=new LiveData();
         MutableLiveData<MoviesData> aa=liveData.getDataNet();
+        aa.observe((LifecycleOwner) context, new Observer<MoviesData>() {
+            @Override
+            public void onChanged(@Nullable MoviesData moviesData) {
+                for (int i = 0; i < moviesData.data.size(); i++) {
+                    UserModel userModel=new UserModel();
+                    userModel.setName(moviesData.data.get(i).getTitle());
+                    userModel.setPhone(moviesData.data.get(i).getYear());
+                    userViewModels.add(new UserViewModel(userModel));
+                }
+             userMutableLiveData.setValue(userViewModels);
+            }
+        });
 
     }
 
