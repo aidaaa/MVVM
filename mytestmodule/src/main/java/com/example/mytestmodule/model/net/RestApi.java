@@ -40,13 +40,13 @@ public class RestApi
         }
 
         return Observable.just(list);
-        /*return Observable.create(new ObservableOnSubscribe<ArrayList<MovieModel>>() {
+        /*return Observable.create(new ObservableOnSubscribe<ArrayList<TestMovieModel>>() {
             @Override
-            public void subscribe(ObservableEmitter<ArrayList<MovieModel>> emitter) throws Exception {
-                MoviesData moviesData=getMovieModel();
+            public void subscribe(ObservableEmitter<ArrayList<TestMovieModel>> emitter) throws Exception {
+                TestMoviesData moviesData=getMovieModel();
                 if (!emitter.isDisposed() && moviesData!=null)
                 {
-                    ArrayList<MovieModel> models=new ArrayList<>();
+                    ArrayList<TestMovieModel> models=new ArrayList<>();
                     for (int i = 0; i < moviesData.data.size(); i++) {
                         models.add(moviesData.data.get(i));
                     }

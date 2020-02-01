@@ -11,12 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <android.support.v7.widget.RecyclerView
-            bind:rvBind="@{user.userViewModels}"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-
         <EditText
             android:text="@={user.name}"
             android:layout_width="match_parent"
@@ -36,6 +30,17 @@
             android:text="@{user.phone}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            bind:targetApi="lollipop"></Toolbar>
+
+        <android.support.v7.widget.RecyclerView
+            bind:rvBind="@{user.userViewModels}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
 
     </LinearLayout>
