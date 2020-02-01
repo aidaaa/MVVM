@@ -12,9 +12,35 @@ import io.reactivex.ObservableOnSubscribe;
 
 public class RestApi
 {
-    public Observable<ArrayList<MovieModel>> getMovie()
+    public Observable<ArrayList<MovieModel>> getMovie(int i)
     {
-        return Observable.create(new ObservableOnSubscribe<ArrayList<MovieModel>>() {
+        ArrayList<MovieModel> list=new ArrayList<>();
+        if (i==0)
+        {
+            for (int j = 0; j < 10; j++) {
+                MovieModel model=new MovieModel();
+                model.setId(j);
+                model.setPoster("http://moviesapi.ir/images/tt0111161_poster.jpg");
+                model.setImdb_rating(String.valueOf(j));
+                model.setTitle(String.valueOf(j));
+                model.setYear(String.valueOf(j));
+                list.add(model);
+            }
+        }
+        else {
+            for (int j = 0; j < 5; j++) {
+                MovieModel model=new MovieModel();
+                model.setId(j);
+                model.setPoster("http://moviesapi.ir/images/tt0111161_screenshot2.jpg");
+                model.setImdb_rating(String.valueOf(j));
+                model.setTitle(String.valueOf(j));
+                model.setYear(String.valueOf(j));
+                list.add(model);
+            }
+        }
+
+        return Observable.just(list);
+        /*return Observable.create(new ObservableOnSubscribe<ArrayList<MovieModel>>() {
             @Override
             public void subscribe(ObservableEmitter<ArrayList<MovieModel>> emitter) throws Exception {
                 MoviesData moviesData=getMovieModel();
@@ -32,7 +58,7 @@ public class RestApi
                     emitter.onError(new Exception());
                 }
             }
-        });
+        });*/
     }
 
     public MoviesData getMovieModel()
