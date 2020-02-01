@@ -4,6 +4,7 @@ import com.example.mytestmodule.model.MovieModel;
 import com.example.mytestmodule.model.MoviesData;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -11,17 +12,19 @@ import io.reactivex.ObservableOnSubscribe;
 
 public class RestApi
 {
-    public Observable<MovieModel> getMovie()
+    public Observable<ArrayList<MovieModel>> getMovie()
     {
-        return Observable.create(new ObservableOnSubscribe<MovieModel>() {
+        return Observable.create(new ObservableOnSubscribe<ArrayList<MovieModel>>() {
             @Override
-            public void subscribe(ObservableEmitter<MovieModel> emitter) throws Exception {
+            public void subscribe(ObservableEmitter<ArrayList<MovieModel>> emitter) throws Exception {
                 MoviesData moviesData=getMovieModel();
                 if (!emitter.isDisposed() && moviesData!=null)
                 {
+                    ArrayList<MovieModel> models=new ArrayList<>();
                     for (int i = 0; i < moviesData.data.size(); i++) {
-                        emitter.onNext(moviesData.data.get(i));
+                        models.add(moviesData.data.get(i));
                     }
+                    emitter.onNext(models);
                     emitter.onComplete();
                 }
                 else
