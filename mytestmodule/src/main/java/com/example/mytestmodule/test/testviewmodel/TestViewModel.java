@@ -6,6 +6,7 @@ import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,12 +22,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class TestViewModel extends BaseObservable
+public class TestViewModel extends BaseObservable implements Observer<ArrayList<MovieModel>>
 {
     Context context;
     private MovieModel movieModel;
@@ -65,11 +67,12 @@ public class TestViewModel extends BaseObservable
 
     public TestViewModel(Context context) {
         this.context = context;
+        final RestApi restApi=new RestApi();
 
-        RestApi restApi=new RestApi();
         restApi.getMovie(0).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<ArrayList<MovieModel>>() {
+                .subscribe(this);
+              /*  .subscribe(new Observer<ArrayList<MovieModel>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
@@ -93,7 +96,7 @@ public class TestViewModel extends BaseObservable
                     public void onComplete() {
 
                     }
-                });
+                });*/
     }
 
     public TestViewModel(MovieModel movieModel) {
@@ -122,9 +125,11 @@ public class TestViewModel extends BaseObservable
     public void onCategoryClick(View view, TestViewModel model)
     {
         RestApi restApi=new RestApi();
-        restApi.getMovie(1).observeOn(AndroidSchedulers.mainThread())
+        restApi.getMovie(1)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<ArrayList<MovieModel>>() {
+                .subscribe(this);
+                /*.subscribe(new Observer<ArrayList<MovieModel>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
@@ -152,6 +157,34 @@ public class TestViewModel extends BaseObservable
                     public void onComplete() {
 
                     }
-                });
+                });*/
+    }
+
+    @Override
+    public void onSubscribe(Disposable d) {
+
+    }
+
+    @Override
+    public void onNext(ArrayList<MovieModel> movieModels) {
+        if (testViewModels.size()>0)
+        {
+            testViewModels.clear();
+        }
+        for (int i = 0; i < movieModels.size(); i++) {
+            TestViewModel testViewModel=new TestViewModel(movieModels.get(i));
+            testViewModels.add(testViewModel);
+        }
+        mutableLiveData.setValue(testViewModels);
+    }
+
+    @Override
+    public void onError(Throwable e) {
+
+    }
+
+    @Override
+    public void onComplete() {
+
     }
 }

@@ -15,6 +15,7 @@ public class RestApi
     public Observable<ArrayList<MovieModel>> getMovie(int i)
     {
         ArrayList<MovieModel> list=new ArrayList<>();
+
         if (i==0)
         {
             for (int j = 0; j < 10; j++) {
